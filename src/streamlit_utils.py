@@ -82,14 +82,10 @@ def fixNaN(source_df):
     df = df.drop(columns = ["Identifiant technique compteur", "ID Photos", "test_lien_vers_photos_du_site_de_comptage_", "id_photo_1", "url_sites", "type_dimage", "mois_annee_comptage", "Lien vers photo du site de comptage"])
     return df
 
-def plotly_map():
-    df_2023 = pd.read_csv('data/raw/2023-comptage-velo-donnees-compteurs.csv', sep=';')
-    df_2024 = pd.read_csv('data/raw/2024-comptage-velo-donnees-compteurs.csv', sep=';') 
-    df = pd.concat([df_2023, df_2024], axis=0)
-    df = fixNaN(df)
+def plotly_map(df):
     df_geo = df["Coordonnées géographiques"].str.split(',', expand=True).rename(columns={0: "latitude", 1: "longitude"})
-    df = pd.concat([df, df_geo], axis=1)
-    df_group = df.groupby("Nom du compteur", as_index=False).agg({
+    df_geo = pd.concat([df, df_geo], axis=1)
+    df_group = df_geo.groupby("Nom du compteur", as_index=False).agg({
         "Comptage horaire": "sum",
         "latitude": "first",
         "longitude": "first"

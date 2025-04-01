@@ -4,7 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from src.streamlit_utils import plotly_map
+from src.streamlit_utils import plotly_map, fixNaN
+
+@st.cache_data
+def load_raw_data():
+    df_2023 = pd.read_csv('data/raw/2023-comptage-velo-donnees-compteurs.csv', sep=';')
+    df_2024 = pd.read_csv('data/raw/2024-comptage-velo-donnees-compteurs.csv', sep=';') 
+    df = pd.concat([df_2023, df_2024], axis=0)
+    df = fixNaN(df)
+    return df
 
 # Charger les données
 df = pd.read_csv("data/processed/lieu-compteur-one-hot-encoded.csv", index_col=0)
@@ -239,7 +247,7 @@ if page == pages[3]:
 
     Carte de la ville de Paris représentant les positions des différents compteurs du dataset (La taille de chaque point correspond au comptage horaire total).""")
 
-    st.plotly_chart(plotly_map())
+    st.plotly_chart(plotly_map(load_raw_data()))
 
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
