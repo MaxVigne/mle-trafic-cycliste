@@ -81,6 +81,14 @@ def fixNaN(source_df):
     df = df.drop(index=df.loc[df['Nom du compteur'] == '10 avenue de la Grande Armée 10 avenue de la Grande Armée [Bike OUT]'].index)
     df = df.drop(index=df.loc[df['Nom du compteur'] == '10 avenue de la Grande Armée 10 avenue de la Grande Armée [Bike IN]'].index)
     df = df.drop(columns = ["Identifiant technique compteur", "ID Photos", "test_lien_vers_photos_du_site_de_comptage_", "id_photo_1", "url_sites", "type_dimage", "mois_annee_comptage", "Lien vers photo du site de comptage"])
+    df['Date et heure de comptage'] = pd.to_datetime(df['Date et heure de comptage'], utc=True)
+    df['Date et heure de comptage'] = df['Date et heure de comptage'].dt.tz_convert("Europe/Paris")
+    df['year'] = df['Date et heure de comptage'].dt.year
+    df['month'] = df['Date et heure de comptage'].dt.month
+    df['day'] = df['Date et heure de comptage'].dt.day
+    df['weekday'] = df['Date et heure de comptage'].dt.weekday
+    df['hour'] = df['Date et heure de comptage'].dt.hour
+    df['mois_annee_comptage'] = df['year'].astype(str) + '-' + df['month'].astype(str)
     return df
 
 @st.cache_data
@@ -105,7 +113,7 @@ def plotly_map(df):
         color="Comptage horaire",
         size_max=30,
         center={"lat": 48.86, "lon": 2.335},
-        zoom=11.3,
+        zoom=11,
         hover_name="Nom du compteur",
         width=800,
         height=750)
