@@ -22,7 +22,6 @@ st.image("streamlit_assets/banniere6.jpeg", use_container_width=True)
 #Titres
 st.title("**Projet Data Science - Trafic Cycliste à Paris**")
 st.subheader("_de Février à Mars 2025_")
-st.divider()
 
 st.sidebar.title("Sommaire")
 pages=["Présentation du Projet", "Présentation du dataset", "Préprocessing", "Visualisation des données", "Modèles de classification", "Modèles de régression", "Interprétation et résultats", "Conclusion"]
@@ -81,7 +80,7 @@ L'enjeu est de transformer ces données brutes en insights exploitables, permett
 ## Présentation du dataset
 if page == pages[1]: 
     st.header("Présentation du dataset", divider=True)
-    st.subheader("1. Sources des données")
+    st.header("1. Sources des données")
     st.image("streamlit_assets/opendata2.png", use_container_width=True)
     st.markdown("""
 Utilisation des jeux de données ouverts proposés par la Ville de Paris via [opendata.paris.fr](https://opendata.paris.fr) :
@@ -94,7 +93,7 @@ Les données sont publiées sous la licence Open Database License (ODbL), qui au
 
     st.divider()
 
-    st.subheader("2. Période ")
+    st.header("2. Période ")
     st.markdown("""
 Les données sont mises à jour quotidiennement. 
 
@@ -103,7 +102,7 @@ Nous avons récupéré toutes les données du 1er janvier 2023 au 28 février 20
 
     st.divider()
 
-    st.subheader("3. Contenu des jeux de données  ")
+    st.header("3. Contenu des jeux de données  ")
     st.markdown("""
 Les jeux de données recensent les comptages horaires des passages de vélos effectués par environ une centaine de compteurs répartis dans la ville de Paris.
                   
@@ -114,7 +113,7 @@ Au total, pour la période 2023-2024, le jeu de données contient environ 1,8 mi
 
     st.divider()
 
-    st.subheader("4. Structure des données")
+    st.header("4. Structure des données")
     st.markdown("""
 Chaque ligne du dataset correspond au nombre de vélos enregistrés pendant une heure par un compteur donné.  
 
@@ -127,7 +126,7 @@ Les données incluent, en plus du comptage horaire, plusieurs métadonnées asso
 """)
 
     st.divider()
-    st.subheader("5. Nettoyage et sélection des variables  ")
+    st.header("5. Nettoyage et sélection des variables  ")
 
     st.markdown("""
 Afin de simplifier et d’optimiser l’analyse, nous avons supprimé les variables non pertinentes pour l'entraînement du modèle, en particulier les champs techniques ou visuels comme les liens vers les photos, les identifiants internes ou le type d’image.  
@@ -139,14 +138,14 @@ Voici un extrait de notre dataset avec les variables que nous avons décidé de 
 
     st.divider()
 
-    st.subheader("6. Objectif d’analyse et variable cible  ")
+    st.header("6. Objectif d’analyse et variable cible  ")
     st.markdown("""
 L’objectif de notre étude est de prédire le nombre de vélos comptés pendant une heure sur un compteur donné.  
 La variable cible de notre modèle est donc le comptage horaire, un indicateur clé pour analyser l'évolution de la circulation cycliste dans Paris.
 """)
 
     st.divider()
-    st.subheader("7. Forces et limites du dataset")
+    st.header("7. Forces et limites du dataset")
 
     st.markdown("""
 Le dataset se distingue par sa précision horaire et sa couverture géographique dense, ce qui permet d’identifier des tendances temporelles comme les variations quotidiennes ou saisonnières du trafic cycliste.  
@@ -162,7 +161,7 @@ Cette absence limite la profondeur des analyses prédictives que l’on peut men
 ## Préprocessing
 if page == pages[2]: 
     st.header("Préprocessing des données", divider=True)
-    st.subheader("1. Suppression des NaN")
+    st.header("1. Suppression des NaN")
 
     st.markdown("""
     Certaines variables de métadonnées des compteurs ("Identifiant du compteur", "Coordonnées géographiques", ...) ont des valeurs NaN (environ 3.4% sur le dataset)
@@ -172,7 +171,7 @@ if page == pages[2]:
     Les derniers NaN provenaient de deux compteurs atypiques, finalement supprimés pour obtenir un dataset complet et sans valeurs manquantes
     """) 
         
-    st.subheader("2. Conversion Date au format datetime") 
+    st.header("2. Conversion Date au format datetime") 
                     
     st.markdown("""
     Variable "Date et heure de comptage" convertie au format datetime de Pandas, en utilisant le fuseau horaire Europe/Paris afin de correctement capturer les tendances journalières.
@@ -184,7 +183,7 @@ if page == pages[2]:
     df['Date et heure de comptage'] = df['Date et heure de comptage'].dt.tz_convert("Europe/Paris")
     """, language="python")
 
-    st.subheader("3. Ajout de variables")
+    st.header("3. Ajout de variables")
     st.markdown("""                
     La variable "Date et heure de comptage" décomposée en variables "année", 
     "mois", "jour", "jour de la semaine" et "heure" afin de faciliter la data visualisation et voir si 
@@ -200,7 +199,7 @@ if page == pages[2]:
 
     st.markdown('Ajout des variables catégorielles binaires "Week-end", "Jour fériés" et "Vacances scolaires" afin de mesurer si les jours non travaillés ont un impact sur la pratique cyclable.') 
 
-    st.subheader("4. Normalisation des données")
+    st.header("4. Normalisation des données")
 
     st.markdown("""
     Nous avons appliqué deux types de **normalisation** sur les colonnes temporelles et contextuelles, notamment pour réduire l'impact des valeurs extrêmes de Comptage horaire sur les prédictions de notre modèle,  la variable Comptage horaire ne suivant pas une loi normale :
@@ -209,7 +208,7 @@ if page == pages[2]:
     2. **Min-Max Scaling** : transforme les valeurs dans une plage définie, ici entre 0 et 1.
     """)
 
-    st.markdown("#### 🔹 Standardisation")
+    st.subheader("🔹 Standardisation")
 
     st.code("""
     from sklearn.preprocessing import StandardScaler
@@ -220,7 +219,7 @@ scaler = StandardScaler()
 df[col_norm] = scaler.fit_transform(df[col_norm])
     """, language="python")
 
-    st.markdown("#### 🔹 Normalisation Min-Max")
+    st.subheader("🔹 Normalisation Min-Max")
 
     st.code("""
 from sklearn.preprocessing import MinMaxScaler
@@ -235,18 +234,18 @@ df[col_norm] = scaler.fit_transform(df[col_norm])
     Ces transformations permettent de préparer les données pour les modèles sensibles à l’échelle des variables (régressions, KNN, etc.).
     """)
 
-    st.subheader("Extrait du Dataframe après pré-processing")
+    st.header("Extrait du Dataframe après pré-processing")
     st.dataframe(df.head(10))
 
 
 
 
-                
+## Visualisation des données                
 if page == pages[3]: 
     raw_data = load_raw_data()
 
     st.header("Visualisation des données", divider=True)
-    st.subheader("I. Cartographie")
+    st.header("I. Cartographie")
     st.markdown("Carte de la ville de Paris représentant les positions des différents compteurs du dataset. La taille de chaque point correspond au comptage horaire total.")
 
     st.plotly_chart(plotly_map(load_raw_data()))
@@ -263,9 +262,9 @@ if page == pages[3]:
     Compteurs "centraux" ont plus de comptage que ceux en périphérie de Paris : 
     Corrélation entre la localisation du compteur et le comptage horaire ?""")
 
-    st.subheader("II. Évolution temporelle")
+    st.header("II. Évolution temporelle")
 
-    st.markdown("""#### a. Évolution globale du trafic""")
+    st.subheader("""a. Évolution globale du trafic""")
     fig = plt.figure(figsize=(12, 5))
     comptage_quotidien = raw_data.groupby("date")["Comptage horaire"].sum()
     plt.plot(comptage_quotidien.index.astype(str), comptage_quotidien.values, linestyle = "-", color = "orange")
@@ -286,7 +285,7 @@ Il semble également y avoir une reprise au mois de Septembre montrant la repris
 et la rentrée pour les étudiants.
 """)
 
-    st.markdown("""#### b. Saisonnalité du trafic""")
+    st.subheader("""b. Saisonnalité du trafic""")
     
     fig = plt.figure()
     sns.barplot(df, x='Mois', y='Comptage horaire', errorbar=None)
@@ -300,7 +299,7 @@ et la rentrée pour les étudiants.
 
     Cela est peut-être dû aux **vacances**, à certains **événements** (JO de Paris en août) et à la **météo** (il fait plus froid en hiver, ce qui n'encourage pas la pratique cycliste).""")
 
-    st.markdown("""#### c. Comportement selon les jours""")
+    st.subheader("""c. Comportement selon les jours""")
     
     fig = plt.figure(figsize=(10, 5))
     sns.barplot(df, x='Jour_semaine', y='Comptage horaire', errorbar=None)
@@ -315,7 +314,7 @@ et la rentrée pour les étudiants.
     """)
 
 
-    st.markdown("""#### d. Evolution du trafic au fil des heures""")
+    st.subheader("""d. Evolution du trafic au fil des heures""")
 
     st.markdown("""À gauche : **jours de la semaine** (lundi à vendredi) — À droite : **week-end** (samedi et dimanche)""")
 
@@ -351,14 +350,14 @@ et la rentrée pour les étudiants.
     **Volume de passages** relativement **régulier** entre **11h et 20h** le **week-end**.
     """)
 
-    st.subheader("III. Distribution de la variable cible")
-    st.markdown('#### Boxplot de la variable comptage horaire')
+    st.header("III. Distribution de la variable cible")
+    st.subheader('Boxplot global de la variable comptage horaire')
 
     fig = plt.figure(figsize=(10, 5))
     sns.boxplot(raw_data, x='Comptage horaire')
     st.pyplot(fig)
 
-    st.markdown('#### Boxplot de la variable comptage horaire en fonction du lieu de comptage')
+    st.subheader('Boxplot de la variable comptage horaire en fonction du lieu de comptage')
 
     agg_data = get_lieux_compteurs_df(raw_data)
     site = st.selectbox("Nom du site de comptage", list(agg_data['Nom du site de comptage'].unique()))
@@ -367,10 +366,9 @@ et la rentrée pour les étudiants.
     plt.title(site)
     st.pyplot(fig)
     
-    st.markdown("""
-    ### IV. Corrélation entre les variables""")
+    st.header("IV. Corrélation entre les variables")
     
-    st.markdown("""#### Matrice de corrélation entre les variables""")
+    st.subheader("Matrice de corrélation entre les variables")
 
     st.image("streamlit_assets/matrice.jpeg", use_container_width=True)
 
