@@ -90,6 +90,7 @@ def fixNaN(source_df):
     df['weekday'] = df['Date et heure de comptage'].dt.weekday
     df['hour'] = df['Date et heure de comptage'].dt.hour
     df['mois_annee_comptage'] = df['year'].astype(str) + '-' + df['month'].astype(str)
+    df = df.loc[df.year >= 2023]
     return df
 
 @st.cache_data

@@ -357,7 +357,18 @@ et la rentrée pour les étudiants.
     sns.boxplot(raw_data, x='Comptage horaire')
     st.pyplot(fig)
 
-    st.subheader('Boxplot de la variable comptage horaire en fonction du lieu de comptage')
+    st.markdown('On remarque la présence de nombreuses valeurs extrêmes, au sens statistique. 75% des valeurs sont inférieures à 95 comptages par heure et 25% des valeurs sont inférieures à 11.')
+
+    st.subheader('Histogramme de la variable comptage horaire')
+
+    fig = plt.figure(figsize=(10, 5))
+    sns.histplot(raw_data, x='Comptage horaire', kde=True)
+    plt.xlim(0, 2000)
+    st.pyplot(fig)
+
+    st.markdown("L'histogramme confirme le nombre élevé de valeurs inférieures à 100.")
+
+    st.subheader('Boxplot de la variable comptage horaire en fonction du lieu de comptage') 
 
     agg_data = get_lieux_compteurs_df(raw_data)
     site = st.selectbox("Nom du site de comptage", list(agg_data['Nom du site de comptage'].unique()))
@@ -365,6 +376,7 @@ et la rentrée pour les étudiants.
     sns.boxplot(agg_data.loc[agg_data['Nom du site de comptage'] == site], x='Comptage horaire')
     plt.title(site)
     st.pyplot(fig)
+
     
     st.header("IV. Corrélation entre les variables")
     
