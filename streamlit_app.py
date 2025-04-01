@@ -89,7 +89,10 @@ if page == pages[1]:
     st.image("streamlit_assets/opendata2.png", use_container_width=True)
 
     st.markdown("""
-- Utilisation des jeux de données ouverts proposés par la Ville de Paris via opendata.paris.fr :
+- Utilisation des jeux de données ouverts proposés par la Ville de Paris via [opendata.paris.fr](https://opendata.paris.fr) :
+
+  - le jeu de données [Comptage vélo - Données compteurs](https://opendata.paris.fr/explore/dataset/comptage-velo-donnees-compteurs/information) pour les données de 2024.
+  - le jeu de données [Comptage vélo - Historique - Données Compteurs et Sites de comptage](https://opendata.paris.fr/explore/dataset/comptage-velo-historique-donnees-compteurs/information) pour les données de 2023.
                  
 - Données publiées sous la licence Open Database License (ODbL), qui autorise la réutilisation, l’adaptation et la création de travaux dérivés à partir de ces jeux de données, à condition d’en citer la source.
 
