@@ -58,6 +58,15 @@ Les datasets suivants sont seulement utilisés pour [1.5_dataviz_annees_anterieu
 
 Une archive ZIP avec les datasets pré et post processing est disponible : [data_jan25_bds_trafic_cycliste.zip](https://drive.google.com/file/d/1KGefd6n7SmDHToVcVNGkKb6GjAZQvFUz/view?usp=sharing)
 
+Streamlit
+---------
+
+Pour lancer le streamlit:
+
+```shell
+streamlit run streamlit_app.py
+```
+
 Organisation du projet
 ----------------------
 

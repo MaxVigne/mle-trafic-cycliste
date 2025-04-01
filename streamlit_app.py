@@ -5,21 +5,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Charger les données
-df = pd.read_csv("lieu-compteur-one-hot-encoded.csv")
+df = pd.read_csv("data/processed/lieu-compteur-one-hot-encoded.csv")
 
-#Image
-st.image("banniere6.jpeg", use_column_width=True)
+st.image("streamlit_assets/banniere6.jpeg", use_container_width=True)
 
 #Titres
 st.markdown("""
-# **Data analyse du trafic cycliste à Paris**  
-### _de Janvier 2023 à Février 2025_
+# **Projet Data Science - Trafic Cycliste à Paris**  
+### _de Janvier à Mars 2025_
 """)
 st.sidebar.title("Sommaire")
 pages=["Présentation du Projet", "Dataset", "Pre-processing", "Visualisation des données", "Modèles de classification", "Modèles de régression", "Interprétation et résultats", "Conclusion"]
 page=st.sidebar.radio("Aller vers", pages)
-
-import streamlit as st
 
 
 if page == pages[0]:
@@ -36,7 +33,7 @@ if page == pages[0]:
     # Ajout d'espace avant l'image
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
-    st.image("comptagevélo.jpeg", use_column_width=True)
+    st.image("streamlit_assets/comptagevélo.jpeg", use_container_width=True)
 
     # Ajout d'espace après l'image
     st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
@@ -106,7 +103,7 @@ if page == pages[1]:
     st.markdown("""
 ### 1. Source des données""")  
                 
-    st.image("opendata2.png", use_column_width=True)
+    st.image("streamlit_assets/opendata2.png", use_container_width=True)
 
     st.markdown("""
 - Utilisation des jeux de données ouverts proposés par la Ville de Paris via opendata.paris.fr :
@@ -148,7 +145,7 @@ Afin de simplifier et d’optimiser l’analyse, nous avons supprimé les variab
 
 Voici un extrait de notre dataset avec les variables que nous avons décidé de conserver :""")
 
-    st.image("dataframe.jpeg", use_column_width=True)
+    st.image("streamlit_assets/dataframe.jpeg", use_container_width=True)
 
     st.markdown("""
 ---
@@ -221,7 +218,7 @@ if page == pages[3]:
 
     Carte de la ville de Paris représentant les positions des différents compteurs du dataset (La taille de chaque point correspond au comptage horaire total).""")
 
-    st.image("carte.png", use_column_width=True)
+    st.image("streamlit_assets/carte.png", use_container_width=True)
 
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
@@ -328,7 +325,7 @@ if page == pages[3]:
     st.markdown("""
     ### III. Corrélation entre les variables""")
     
-    st.image("matrice.jpeg", use_column_width=True)
+    st.image("streamlit_assets/matrice.jpeg", use_container_width=True)
 
     st.markdown("""
     <div style='font-size:18px;'>
