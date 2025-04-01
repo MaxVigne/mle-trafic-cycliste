@@ -368,6 +368,18 @@ et la rentrée pour les étudiants.
 
     st.markdown("L'histogramme confirme le nombre élevé de valeurs inférieures à 100.")
 
+    st.subheader("QQ-Plot de la variable comptage horaire")
+    import statsmodels.api as sm
+
+    fig = sm.qqplot(df["Comptage horaire"], line = "r")
+    plt.title("QQ-Plot de Comptage horaire")
+    st.pyplot(fig)
+
+    st.markdown("""
+    On peut se rendre compte que la distribution n'est pas normale.
+    Ceci peut s'expliquer par le fait que les données soient concentrées vers 0.
+    """)
+
     st.subheader('Boxplot de la variable comptage horaire en fonction du lieu de comptage') 
 
     agg_data = get_lieux_compteurs_df(raw_data)
