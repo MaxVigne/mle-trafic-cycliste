@@ -94,7 +94,7 @@ if page == pages[1]:
   - le jeu de données [Comptage vélo - Données compteurs](https://opendata.paris.fr/explore/dataset/comptage-velo-donnees-compteurs/information) pour les données de 2024.
   - le jeu de données [Comptage vélo - Historique - Données Compteurs et Sites de comptage](https://opendata.paris.fr/explore/dataset/comptage-velo-historique-donnees-compteurs/information) pour les données de 2023.
                  
-- Données publiées sous la licence Open Database License (ODbL), qui autorise la réutilisation, l’adaptation et la création de travaux dérivés à partir de ces jeux de données, à condition d’en citer la source.
+- Les données sont publiées sous la licence Open Database License (ODbL), qui autorise la réutilisation, l’adaptation et la création de travaux dérivés à partir de ces jeux de données, à condition d’en citer la source.
 
 ---
                 
@@ -131,7 +131,8 @@ Afin de simplifier et d’optimiser l’analyse, nous avons supprimé les variab
 
 Voici un extrait de notre dataset avec les variables que nous avons décidé de conserver :""")
 
-    st.image("streamlit_assets/dataframe.jpeg", use_container_width=True)
+    st.dataframe(load_raw_data().sample(5))
+    # st.image("streamlit_assets/dataframe.jpeg", use_container_width=True)
 
     st.markdown("""
 ---
