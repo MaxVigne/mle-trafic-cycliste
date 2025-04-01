@@ -22,6 +22,7 @@ st.image("streamlit_assets/banniere6.jpeg", use_container_width=True)
 #Titres
 st.title("**Projet Data Science - Trafic Cycliste à Paris**")
 st.subheader("_de Février à Mars 2025_")
+st.divider()
 
 st.sidebar.title("Sommaire")
 pages=["Présentation du Projet", "Présentation du dataset", "Préprocessing", "Visualisation des données", "Modèles de classification", "Modèles de régression", "Interprétation et résultats", "Conclusion"]
@@ -80,11 +81,8 @@ L'enjeu est de transformer ces données brutes en insights exploitables, permett
 ## Présentation du dataset
 if page == pages[1]: 
     st.header("Présentation du dataset", divider=True)
-
     st.subheader("1. Sources des données")
-
     st.image("streamlit_assets/opendata2.png", use_container_width=True)
-
     st.markdown("""
 Utilisation des jeux de données ouverts proposés par la Ville de Paris via [opendata.paris.fr](https://opendata.paris.fr) :
 
@@ -92,27 +90,32 @@ Utilisation des jeux de données ouverts proposés par la Ville de Paris via [op
   - le jeu de données [Comptage vélo - Historique - Données Compteurs et Sites de comptage](https://opendata.paris.fr/explore/dataset/comptage-velo-historique-donnees-compteurs/information) pour les données de 2023.
                  
 Les données sont publiées sous la licence Open Database License (ODbL), qui autorise la réutilisation, l’adaptation et la création de travaux dérivés à partir de ces jeux de données, à condition d’en citer la source.
+""") 
 
----
-                
-### 2. Période 
-                
+    st.divider()
+
+    st.subheader("2. Période ")
+    st.markdown("""
 Les données sont mises à jour quotidiennement. 
 
 Nous avons récupéré toutes les données du 1er janvier 2023 au 28 février 2025 (26 mois).                
+""") 
 
----
+    st.divider()
 
-### 3. Contenu des jeux de données  
+    st.subheader("3. Contenu des jeux de données  ")
+    st.markdown("""
 Les jeux de données recensent les comptages horaires des passages de vélos effectués par environ une centaine de compteurs répartis dans la ville de Paris.
                   
 Chaque lieu de comptage est généralement équipé de deux compteurs, face à face, positionnés pour mesurer le trafic dans chaque direction d’une même rue. 
                  
 Au total, pour la période 2023-2024, le jeu de données contient environ 1,8 million de lignes réparties sur 16 variables.
+""")
 
----
+    st.divider()
 
-### 4. Structure des données  
+    st.subheader("4. Structure des données")
+    st.markdown("""
 Chaque ligne du dataset correspond au nombre de vélos enregistrés pendant une heure par un compteur donné.  
 
 Les données incluent, en plus du comptage horaire, plusieurs métadonnées associées au compteur ou au site de comptage, telles que :
@@ -121,27 +124,31 @@ Les données incluent, en plus du comptage horaire, plusieurs métadonnées asso
 - La date d’installation du compteur
 - Les coordonnées géographiques  
 - Éventuellement, des liens vers des photos du site
+""")
 
----
-
-### 5. Nettoyage et sélection des variables  
-Afin de simplifier et d’optimiser l’analyse, nous avons supprimé les variables non pertinentes pour l'entraînement du modèle, en particulier les champs techniques ou visuels comme les liens vers les photos, les identifiants internes ou le type d’image.  
-
-Voici un extrait de notre dataset avec les variables que nous avons décidé de conserver :""")
-
-    st.dataframe(load_raw_data().sample(5))
-    # st.image("streamlit_assets/dataframe.jpeg", use_container_width=True)
+    st.divider()
+    st.subheader("5. Nettoyage et sélection des variables  ")
 
     st.markdown("""
----
+Afin de simplifier et d’optimiser l’analyse, nous avons supprimé les variables non pertinentes pour l'entraînement du modèle, en particulier les champs techniques ou visuels comme les liens vers les photos, les identifiants internes ou le type d’image.  
 
-### 6. Objectif d’analyse et variable cible  
+Voici un extrait de notre dataset avec les variables que nous avons décidé de conserver :
+""")
+
+    st.dataframe(load_raw_data().sample(5))
+
+    st.divider()
+
+    st.subheader("6. Objectif d’analyse et variable cible  ")
+    st.markdown("""
 L’objectif de notre étude est de prédire le nombre de vélos comptés pendant une heure sur un compteur donné.  
 La variable cible de notre modèle est donc le comptage horaire, un indicateur clé pour analyser l'évolution de la circulation cycliste dans Paris.
+""")
 
----
+    st.divider()
+    st.subheader("7. Forces et limites du dataset")
 
-### 7. Forces et limites du dataset  
+    st.markdown("""
 Le dataset se distingue par sa précision horaire et sa couverture géographique dense, ce qui permet d’identifier des tendances temporelles comme les variations quotidiennes ou saisonnières du trafic cycliste.  
 
 Cependant, il ne contient pas d’informations contextuelles telles que :
@@ -155,22 +162,20 @@ Cette absence limite la profondeur des analyses prédictives que l’on peut men
 ## Préprocessing
 if page == pages[2]: 
     st.header("Préprocessing des données", divider=True)
+    st.subheader("1. Suppression des NaN")
 
     st.markdown("""
-    ### 1. Suppression des NaN 
-        
     Certaines variables de métadonnées des compteurs ("Identifiant du compteur", "Coordonnées géographiques", ...) ont des valeurs NaN (environ 3.4% sur le dataset)
 
     Plusieurs compteurs du dataset correspondaient en réalité à un même emplacement, ce qui a permis de réduire les NaN en les renommant et fusionnant. 
 
     Les derniers NaN provenaient de deux compteurs atypiques, finalement supprimés pour obtenir un dataset complet et sans valeurs manquantes
-
+    """) 
         
-    ### 2. Conversion Date au format datetime
+    st.subheader("2. Conversion Date au format datetime") 
                     
-    Variable "Date et heure de comptage" convertie au format datetime de 
-    Pandas. (fuseau horaire Europe/Paris afin de correctement capturer 
-    les tendances journalières)
+    st.markdown("""
+    Variable "Date et heure de comptage" convertie au format datetime de Pandas, en utilisant le fuseau horaire Europe/Paris afin de correctement capturer les tendances journalières.
     """) 
                     
     st.code("""
@@ -179,12 +184,12 @@ if page == pages[2]:
     df['Date et heure de comptage'] = df['Date et heure de comptage'].dt.tz_convert("Europe/Paris")
     """, language="python")
 
+    st.subheader("3. Ajout de variables")
     st.markdown("""                
-    ### 3. Ajout de variables
-                    
     La variable "Date et heure de comptage" décomposée en variables "année", 
     "mois", "jour", "jour de la semaine" et "heure" afin de faciliter la data visualisation et voir si 
-    certaines de ces variables étaient corrélés à notre variable cible. """)
+    certaines de ces variables étaient corrélés à notre variable cible.
+    """)
     
     st.code("""
     df["Jour"] = df["Date et heure de comptage"].dt.date
@@ -193,19 +198,18 @@ if page == pages[2]:
     df["Heure"] = df["Date et heure de comptage"].dt.hour
     """, language="python")
 
-    st.markdown("""   
-    
-    Ajout des variables catégorielles binaires "Week-end", "Jour fériés" et "Vacances scolaires" afin de mesurer si les jours non travaillés ont un impact sur la pratique cyclable.  
+    st.markdown('Ajout des variables catégorielles binaires "Week-end", "Jour fériés" et "Vacances scolaires" afin de mesurer si les jours non travaillés ont un impact sur la pratique cyclable.') 
 
-    ### 4. Normalisation des données
+    st.subheader("4. Normalisation des données")
 
+    st.markdown("""
     Nous avons appliqué deux types de **normalisation** sur les colonnes temporelles et contextuelles, notamment pour réduire l'impact des valeurs extrêmes de Comptage horaire sur les prédictions de notre modèle,  la variable Comptage horaire ne suivant pas une loi normale :
 
     1. **Standardisation** : centre les données autour de 0 avec une variance de 1.
     2. **Min-Max Scaling** : transforme les valeurs dans une plage définie, ici entre 0 et 1.
-        """)
+    """)
 
-    st.markdown("### 🔹 Standardisation")
+    st.markdown("#### 🔹 Standardisation")
 
     st.code("""
     from sklearn.preprocessing import StandardScaler
@@ -216,7 +220,7 @@ scaler = StandardScaler()
 df[col_norm] = scaler.fit_transform(df[col_norm])
     """, language="python")
 
-    st.markdown("### 🔹 Normalisation Min-Max")
+    st.markdown("#### 🔹 Normalisation Min-Max")
 
     st.code("""
 from sklearn.preprocessing import MinMaxScaler
@@ -231,9 +235,7 @@ df[col_norm] = scaler.fit_transform(df[col_norm])
     Ces transformations permettent de préparer les données pour les modèles sensibles à l’échelle des variables (régressions, KNN, etc.).
     """)
 
-    
-
-    st.write("### Extrait du Dataframe après pré-processing")
+    st.subheader("Extrait du Dataframe après pré-processing")
     st.dataframe(df.head(10))
 
 
