@@ -40,9 +40,9 @@ _Projet réalisé par:_
 - _Alexandre COURROUX_
 - _Kévin LAKHDAR_
 - _Ketsia PEDRO_
-- _Eliah REBSTOCK_
+- _Eliah REBSTOCK_ 
 
-_Bootcamp Machine Learning Engineer Décembre 2024_
+_Bootcamp Machine Learning Engineer Janvier 2025_
 """)
 
 
