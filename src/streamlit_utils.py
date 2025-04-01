@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import streamlit as st
 
 def fixNaN(source_df):
     df = source_df.copy()
@@ -80,6 +81,12 @@ def fixNaN(source_df):
     df = df.drop(index=df.loc[df['Nom du compteur'] == '10 avenue de la Grande Armée 10 avenue de la Grande Armée [Bike OUT]'].index)
     df = df.drop(index=df.loc[df['Nom du compteur'] == '10 avenue de la Grande Armée 10 avenue de la Grande Armée [Bike IN]'].index)
     df = df.drop(columns = ["Identifiant technique compteur", "ID Photos", "test_lien_vers_photos_du_site_de_comptage_", "id_photo_1", "url_sites", "type_dimage", "mois_annee_comptage", "Lien vers photo du site de comptage"])
+    return df
+
+@st.cache_data
+def get_lieux_compteurs_df(source_df):
+    df = source_df[['Nom du site de comptage', 'Date et heure de comptage', 'Comptage horaire']]
+    df = df.groupby(by=['Nom du site de comptage', 'Date et heure de comptage'], as_index=False)['Comptage horaire'].sum()
     return df
 
 def plotly_map(df):

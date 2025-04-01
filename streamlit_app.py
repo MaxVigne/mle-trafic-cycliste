@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from src.streamlit_utils import plotly_map, fixNaN
+from src.streamlit_utils import plotly_map, fixNaN, get_lieux_compteurs_df
 
 @st.cache_data
 def load_raw_data():
@@ -240,9 +240,9 @@ df[col_norm] = scaler.fit_transform(df[col_norm])
 
                 
 if page == pages[3]: 
+    raw_data = load_raw_data()
+
     st.write("### Visualisation des données")
-
-
 
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
@@ -356,7 +356,25 @@ if page == pages[3]:
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
     
     st.markdown("""
-    ### III. Corrélation entre les variables""")
+    ### III. Distribution de la variable cible""")
+
+    st.markdown('#### Boxplot de la variable comptage horaire')
+
+    fig = plt.figure(figsize=(10, 5))
+    sns.boxplot(raw_data, x='Comptage horaire')
+    st.pyplot(fig)
+
+    st.markdown('#### Boxplot de la variable comptage horaire en fonction du lieu de comptage')
+
+    agg_data = get_lieux_compteurs_df(raw_data)
+    site = st.selectbox("Nom du site de comptage", list(agg_data['Nom du site de comptage'].unique()))
+    fig = plt.figure(figsize=(10, 5))
+    sns.boxplot(agg_data.loc[agg_data['Nom du site de comptage'] == site], x='Comptage horaire')
+    plt.title(site)
+    st.pyplot(fig)
+    
+    st.markdown("""
+    ### IV. Corrélation entre les variables""")
     
     st.image("streamlit_assets/matrice.jpeg", use_container_width=True)
 
