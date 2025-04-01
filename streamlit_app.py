@@ -22,31 +22,22 @@ page=st.sidebar.radio("Aller vers", pages)
 
 
 if page == pages[0]:
-    st.markdown("<h2 style='font-size: 36px;'>I. Contexte</h2>", unsafe_allow_html=True)
+    st.markdown("## I. Contexte")
 
     st.markdown("""
-    <div style='font-size: 20px;'>
-    Face à l'essor du vélo comme mode de transport durable, la Ville de Paris a mis en place, depuis plusieurs années, un réseau de compteurs à vélo permanents pour mesurer l'évolution de la pratique cycliste dans la capitale.
-    <br><br>
-    Ces capteurs, installés sur les axes clés de la ville, collectent en continu des données sur le flux des cyclistes.
-    </div>
-    """, unsafe_allow_html=True)
+Face à l'essor du vélo comme mode de transport durable, la Ville de Paris a mis en place, depuis plusieurs années, un réseau de compteurs à vélo permanents pour mesurer l'évolution de la pratique cycliste dans la capitale.
 
-    # Ajout d'espace avant l'image
-    st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+Ces capteurs, installés sur les axes clés de la ville, collectent en continu des données sur le flux des cyclistes.
+    """)
 
     st.image("streamlit_assets/comptagevélo.jpeg", use_container_width=True)
 
-    # Ajout d'espace après l'image
-    st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
-
     st.markdown("""
-    <div style='font-size: 20px;'>
-    Ce projet s'inscrit dans une démarche de transition vers une mobilité plus verte et une volonté d'adapter les infrastructures urbaines aux besoins réels, tel que proposé dans le plan vélo 2021-2026 d'aménagement de pistes cyclables de la mairie de Paris.
-    <br><br>
-    L'enjeu est de transformer ces données brutes en insights exploitables, permettant d'éclairer les décisions publiques de manière objective et data-driven.
-    </div>
-    """, unsafe_allow_html=True)
+Ce projet s'inscrit dans une démarche de transition vers une mobilité plus verte et une volonté d'adapter les infrastructures urbaines aux besoins réels, tel que proposé dans le plan vélo 2021-2026 d'aménagement de pistes cyclables de la mairie de Paris.
+
+L'enjeu est de transformer ces données brutes en insights exploitables, permettant d'éclairer les décisions publiques de manière objective et data-driven.
+    """)
+
 
 
 
@@ -55,42 +46,24 @@ st.markdown("---")
 
 
 if page == pages[0]: 
-
-    st.markdown("<h2 style='font-size: 36px; margin-bottom: 24px;'>II. Objectifs</h2>", unsafe_allow_html=True)
-
+    st.markdown("## II. Objectifs")
 
     st.markdown("""
-<div style='font-size: 30px; font-family: Inter, sans-serif;'>
+Ce projet vise à développer un **outil prédictif du trafic cycliste à Paris**, en exploitant les données historiques des compteurs vélo.
 
-<p>Ce projet vise à développer un <strong>outil prédictif du trafic cycliste à Paris</strong>, en exploitant les données historiques des compteurs vélo.</p>
+### Objectifs principaux :
+- Identifier les **tendances d’usage** (heures de pointe, zones saturées, variations saisonnières).
+- Générer des **visualisations claires** (cartes thermiques, graphiques temporels).
+- Aider à la **prise de décision** sur les aménagements à prioriser.
 
-<div style='margin-top: 30px;'>
-<strong>Objectifs principaux :</strong>
-<ul>
-  <li>Identifier les <strong>tendances d’usage</strong> (heures de pointe, zones saturées, variations saisonnières).</li>
-  <li>Générer des <strong>visualisations claires</strong> (cartes thermiques, graphiques temporels).</li>
-  <li>Aider à la <strong>prise de décision</strong> sur les aménagements à prioriser.</li>
-</ul>
-</div>
+### Bénéfices pour la Mairie de Paris :
+- Prioriser les **aménagements ciblés** (pistes élargies, carrefours sécurisés, nouveaux itinéraires).
+- Évaluer l’**impact des politiques existantes**.
+- **Optimiser le réseau cyclable** à long terme.
 
-<div style='margin-top: 30px;'>
-<strong>Bénéfices pour la Mairie de Paris :</strong>
-<ul>
-  <li>Prioriser les <strong>aménagements ciblés</strong> (pistes élargies, carrefours sécurisés, nouveaux itinéraires).</li>
-  <li>Évaluer l’<strong>impact des politiques existantes</strong>.</li>
-  <li><strong>Optimiser le réseau cyclable</strong> à long terme.</li>
-</ul>
-</div>
-
-<div style='margin-top: 30px;'>
-<strong>Ambition finale :</strong>
-<blockquote style='border-left: 5px solid #000; padding-left: 10px; margin-top: 10px;'>
-Réduire les <strong>conflits d’usage</strong>, améliorer la <strong>sécurité</strong>, et encourager la pratique du vélo grâce à une <strong>planification data-driven</strong>, combinant <strong>rétrospective</strong> et <strong>prédiction</strong> pour une mobilité plus fluide et résiliente.
-</blockquote>
-</div>
-
-</div>
-""", unsafe_allow_html=True)
+### Ambition finale :
+> Réduire les **conflits d’usage**, améliorer la **sécurité**, et encourager la pratique du vélo grâce à une **planification data-driven**, combinant **rétrospective** et **prédiction** pour une mobilité plus fluide et résiliente.
+    """)
 
 
 
@@ -171,35 +144,83 @@ Cette absence limite la profondeur des analyses prédictives que l’on peut men
 if page == pages[2]: 
 
     st.markdown("""
-### 1. Suppression des NaN 
+    ### 1. Suppression des NaN 
+        
+    Certaines variables de métadonnées des compteurs ("Identifiant du compteur", "Coordonnées géographiques", ...) ont des valeurs NaN (environ 3.4% sur le dataset)
+
+    Plusieurs compteurs du dataset correspondaient en réalité à un même emplacement, ce qui a permis de réduire les NaN en les renommant et fusionnant. 
+
+    Les derniers NaN provenaient de deux compteurs atypiques, finalement supprimés pour obtenir un dataset complet et sans valeurs manquantes
+
+        
+    ### 2. Conversion Date au format datetime
+                    
+    Variable "Date et heure de comptage" convertie au format datetime de 
+    Pandas. (fuseau horaire Europe/Paris afin de correctement capturer 
+    les tendances journalières)
+    """) 
+                    
+    st.code("""
+    # Convertir la colonne en datetime (avec gestion du fuseau horaire)
+    df["Date et heure de comptage"] = pd.to_datetime(df["Date et heure de comptage"], utc=True)
+    df["Date et heure de comptage"] = df["Date et heure de comptage"].dt.tz_localize(None)
+    """, language="python")
+
+    st.markdown("""                
+    ### 3. Ajout de variables
+                    
+    La variable "Date et heure de comptage" décomposée en variables "année", 
+    "mois", "jour", "jour de la semaine" et "heure" afin de faciliter la data visualisation et voir si 
+    certaines de ces variables étaient corrélés à notre variable cible. """)
     
-Certaines variables de métadonnées des compteurs ("Identifiant du compteur", "Coordonnées géographiques", ...) ont des valeurs NaN (environ 3.4% sur le dataset)
+    st.code("""
+    df["Jour"] = df["Date et heure de comptage"].dt.date
+    df["Mois"] = df["Date et heure de comptage"].dt.month
+    df["Année"] = df["Date et heure de comptage"].dt.year
+    df["Heure"] = df["Date et heure de comptage"].dt.hour
+    """, language="python")
 
-Plusieurs compteurs du dataset correspondaient en réalité à un même emplacement, ce qui a permis de réduire les NaN en les renommant et fusionnant. 
+    st.markdown("""   
+    
+    Ajout des variables catégorielles binaires "Week-end", "Jour fériés" et "Vacances scolaires" afin de mesurer si les jours non travaillés ont un impact sur la pratique cyclable.  
 
-Les derniers NaN provenaient de deux compteurs atypiques, finalement supprimés pour obtenir un dataset complet et sans valeurs manquantes
+    ### 4. Normalisation des données
+
+    Nous avons appliqué deux types de **normalisation** sur les colonnes temporelles et contextuelles, notamment pour réduire l'impact des valeurs extrêmes de Comptage horaire sur les prédictions de notre modèle,  la variable Comptage horaire ne suivant pas une loi normale :
+
+    1. **Standardisation** : centre les données autour de 0 avec une variance de 1.
+    2. **Min-Max Scaling** : transforme les valeurs dans une plage définie, ici entre 0 et 1.
+        """)
+
+    st.markdown("### 🔹 Standardisation")
+
+    st.code("""
+    from sklearn.preprocessing import StandardScaler
+
+col_norm = ["Jour", "Mois", "Année", "Heure", "Jour_semaine", "Jour férié", "Vacances scolaires"]
+
+scaler = StandardScaler()
+df[col_norm] = scaler.fit_transform(df[col_norm])
+    """, language="python")
+
+    st.markdown("### 🔹 Normalisation Min-Max")
+
+    st.code("""
+from sklearn.preprocessing import MinMaxScaler
+
+col_norm = ["Jour", "Mois", "Année", "Heure", "Jour_semaine", "Jour férié", "Vacances scolaires"]
+
+scaler = MinMaxScaler(feature_range=(0, 1))
+df[col_norm] = scaler.fit_transform(df[col_norm])
+    """, language="python")
+
+    st.markdown("""
+    Ces transformations permettent de préparer les données pour les modèles sensibles à l’échelle des variables (régressions, KNN, etc.).
+    """)
 
     
-### 2. Conversion Date au format datetime
-                
-Variable "Date et heure de comptage" convertie au format datetime de 
-Pandas. (fuseau horaire Europe/Paris afin de correctement capturer 
-les tendances journalières) 
-                
-### 3. Ajout de variables
-                
-La variable "Date et heure de comptage" décomposée en variables "année", 
-"mois", "jour", "jour de la semaine" et "heure" afin de faciliter la data visualisation et voir si 
-certaines de ces variables étaient corrélés à notre variable cible. 
- 
-Ajout des variables catégorielles binaires "Week-end", "Jour fériés" et "Vacances scolaires" afin de mesurer si les jours non travaillés ont un impact sur la pratique cyclable.  
 
-### 4. Normalisation des données
-                
-Normalisation min-max des données, pour réduire l'impact des valeurs extrêmes de "Comptage horaire" sur les prédictions de notre modèle,  la variable "Comptage horaire" ne suivant pas une loi normale.
- 
-""")
-    st.write("### Extrait du Dataframe")
+    st.write("### Extrait du Dataframe après pré-processing")
     st.dataframe(df.head(10))
 
 
