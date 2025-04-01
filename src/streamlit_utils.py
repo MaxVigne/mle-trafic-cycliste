@@ -86,6 +86,7 @@ def fixNaN(source_df):
     df['year'] = df['Date et heure de comptage'].dt.year
     df['month'] = df['Date et heure de comptage'].dt.month
     df['day'] = df['Date et heure de comptage'].dt.day
+    df["date"] = df["Date et heure de comptage"].dt.date
     df['weekday'] = df['Date et heure de comptage'].dt.weekday
     df['hour'] = df['Date et heure de comptage'].dt.hour
     df['mois_annee_comptage'] = df['year'].astype(str) + '-' + df['month'].astype(str)

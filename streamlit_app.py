@@ -263,8 +263,28 @@ if page == pages[3]:
 
     st.subheader("II. Évolution temporelle")
 
-    st.markdown(""" 
-    #### a. Saisonnalité du trafic""")
+    st.markdown("""#### a. Évolution globale du trafic""")
+    fig = plt.figure(figsize=(12, 5))
+    comptage_quotidien = raw_data.groupby("date")["Comptage horaire"].sum()
+    plt.plot(comptage_quotidien.index.astype(str), comptage_quotidien.values, linestyle = "-", color = "orange")
+
+    plt.xlabel("Jour")
+    plt.ylabel("Nombre de vélos")
+    plt.title("Évolution du comptage quotidien des vélos")
+    plt.xticks(ticks = range(0, len(comptage_quotidien), 15), labels = comptage_quotidien.index[::15].astype(str), rotation = 45, fontsize = 8)
+
+    plt.grid(axis = "y", linestyle = "--", alpha = 0.7)
+    st.pyplot(fig)
+
+    st.markdown("""
+On peut observer ici certaines tendances notamment des diminutions significatives
+au mois d'Août et Décembre qui correspondent respectivement à une saison chaude
+pendant les vacances scolaires (voyages, etc.) et à Noël (saison plus froide et familiale).
+Il semble également y avoir une reprise au mois de Septembre montrant la reprise du travail 
+et la rentrée pour les étudiants.
+""")
+
+    st.markdown("""#### b. Saisonnalité du trafic""")
     
     fig = plt.figure()
     sns.barplot(df, x='Mois', y='Comptage horaire', errorbar=None)
@@ -278,7 +298,7 @@ if page == pages[3]:
 
     Cela est peut-être dû aux **vacances**, à certains **événements** (JO de Paris en août) et à la **météo** (il fait plus froid en hiver, ce qui n'encourage pas la pratique cycliste).""")
 
-    st.markdown("""#### b. Comportement selon les jours""")
+    st.markdown("""#### c. Comportement selon les jours""")
     
     fig = plt.figure(figsize=(10, 5))
     sns.barplot(df, x='Jour_semaine', y='Comptage horaire', errorbar=None)
@@ -293,7 +313,7 @@ if page == pages[3]:
     """)
 
 
-    st.markdown("""#### c. Evolution du trafic au fil des heures""")
+    st.markdown("""#### d. Evolution du trafic au fil des heures""")
 
     st.markdown("""À gauche : **jours de la semaine** (lundi à vendredi) — À droite : **week-end** (samedi et dimanche)""")
 
