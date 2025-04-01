@@ -4,8 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from src.streamlit_utils import plotly_map
+
 # Charger les données
-df = pd.read_csv("data/processed/lieu-compteur-one-hot-encoded.csv")
+df = pd.read_csv("data/processed/lieu-compteur-one-hot-encoded.csv", index_col=0)
 
 st.image("streamlit_assets/banniere6.jpeg", use_container_width=True)
 
@@ -203,8 +205,6 @@ Normalisation min-max des données, pour réduire l'impact des valeurs extrêmes
 
 
 
-
-
                 
 if page == pages[3]: 
     st.write("### Visualisation des données")
@@ -218,7 +218,7 @@ if page == pages[3]:
 
     Carte de la ville de Paris représentant les positions des différents compteurs du dataset (La taille de chaque point correspond au comptage horaire total).""")
 
-    st.image("streamlit_assets/carte.png", use_container_width=True)
+    st.plotly_chart(plotly_map())
 
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
