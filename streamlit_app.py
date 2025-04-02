@@ -609,7 +609,6 @@ un compteur à une heure précise.
     """)
 
     st.subheader('Régression')
-    st.image("streamlit_assets/scores_r2.png", use_container_width=True)
     st.write("""
     - Bonnes performances globales avec un R² de 0.96.
     - Les erreurs augmentent lors des pics de trafic exceptionnels.
