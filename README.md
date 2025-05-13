@@ -102,6 +102,115 @@ Organisation du projet
     │   ├── visualization  <- Scripts to create exploratory and results oriented visualizations
     │   │   └── visualize.py
 
+Service FastAPI
+---------------
+
+TODO: Ajouter un script pour train le modèle et générer le OneHotEncoder et expliquer son usage ici.
+
+Pour lancer le service FastAPI avec Docker, il faut d'abord construire l'image Docker avec la commande :
+
+```shell
+docker build -t trafic_cycliste_service:latest .
+```
+
+Puis le service peut être lancé avec :
+
+```shell
+docker run -ti -p 8000:8000 trafic_cycliste_service:latest
+```
+
+### POST /predict
+
+Renvoie une prédiction pour un lieu de comptage et une heure précise
+
+#### Corps de la requête
+
+```json
+{
+  "jour": 24,
+  "mois": 12,
+  "annee": 2025,
+  "heure": 8,
+  "jour_semaine": 2,
+  "jour_ferie": false,
+  "vacances_scolaires": true,
+  "site_comptage": "Pont des Invalides"
+}
+```
+
+#### Paramètres
+
+- `jour`: Jour du mois (1-31)
+- `mois`: Mois (1-12)
+- `annee`: Année (2024)
+- `heure`: Heure (0-23)
+- `jour_semaine`: Jour de la semaine (0=Lundi, 6=Dimanche)
+- `jour_ferie`: Si c'est un jour férié (true/false)
+- `vacances_scolaires`: Si le jour est pendant les vacances scolaires (true/false)
+- `site_comptage`: Nom du site de comptage
+
+#### Réponse
+
+```json
+{
+  "prediction": 62.049917385050854,
+  "input_parameters": {
+    "jour": 24,
+    "mois": 12,
+    "annee": 2025,
+    "heure": 8,
+    "jour_semaine": 2,
+    "jour_ferie": false,
+    "vacances_scolaires": true,
+    "site_comptage": "Pont des Invalides"
+  }
+}
+```
+
+### Test de l'API
+
+Avec curl:
+
+```bash
+curl --request POST \
+  --url http://localhost:8000/predict \
+  --header 'content-type: application/json' \
+  --data '{
+    "jour": 24,
+    "mois": 12,
+    "annee": 2025,
+    "heure": 8,
+    "jour_semaine": 2,
+    "jour_ferie": false,
+    "vacances_scolaires": true,
+    "site_comptage": "Pont des Invalides"
+}'
+```
+
+Avec Python requests:
+
+```python
+import requests
+
+url = "http://localhost:8000/predict"
+
+payload = {
+    "jour": 24,
+    "mois": 12,
+    "annee": 2025,
+    "heure": 8,
+    "jour_semaine": 2,
+    "jour_ferie": False,
+    "vacances_scolaires": True,
+    "site_comptage": "Pont des Invalides"
+}
+headers = {"content-type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
+```
+
 --------
 
 <p><small>Projet basé sur le <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">template cookiecutter data science project</a>. #cookiecutterdatascience</small></p>
