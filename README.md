@@ -110,13 +110,13 @@ TODO: Ajouter un script pour train le modèle et générer le OneHotEncoder et e
 Pour lancer le service FastAPI avec Docker, il faut d'abord construire l'image Docker avec la commande :
 
 ```shell
-docker build -t trafic_cycliste_service:latest .
+docker compose build
 ```
 
 Puis le service peut être lancé avec :
 
 ```shell
-docker run -ti -p 8000:8000 trafic_cycliste_service:latest
+docker compose up
 ```
 
 ### POST /predict

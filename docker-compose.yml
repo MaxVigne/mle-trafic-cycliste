@@ -1,0 +1,5 @@
+services:
+  trafic_cycliste_service:
+    build: .
+    ports:
+      - 8000:8000
