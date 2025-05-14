@@ -2,7 +2,7 @@ name: Docker and pytest
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "fastapi"]
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
 
