@@ -208,7 +208,7 @@ encoded_X = pd.DataFrame(array, columns=encoder.get_feature_names_out(cat_column
 encoded_X.index = X.index
 
 # Sauvegarde du dataset
-encoded_df = pd.concat([X, y], axis=1)
+encoded_df = pd.concat([encoded_X, y], axis=1)
 encoded_df.to_csv("data/processed/lieu-compteur-one-hot-encoded.csv")
 
 # Sauvegarde du onehotencoder
