@@ -60,10 +60,10 @@ def predict(input_parameters: ModelInputParameters):
         # Prediction
         y_p = np.expm1(model.predict(X_p))
 
-        return {
-            "prediction": y_p,
-            "input_parameters": input_parameters
-        }
+        return PredictionResponse(
+            prediction=y_p,
+            input_parameters=input_parameters
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {e}")
