@@ -1,0 +1,6 @@
+artifact_location: file:///c:/Users/kevin_2crsr2j/Documents/GitHub/jan25_bds_trafic_cycliste/notebooks/mlruns/585009495065115089
+creation_time: 1747244201629
+experiment_id: '585009495065115089'
+last_update_time: 1747244201629
+lifecycle_stage: active
+name: HistGradientBoosting_MLflow
