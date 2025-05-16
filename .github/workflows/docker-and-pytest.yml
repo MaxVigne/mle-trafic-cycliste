@@ -45,9 +45,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Run docker image with docker compose
-        run: docker compose up -d
-
       - name: Set up Python 3.12
         uses: actions/setup-python@v3
         with:
@@ -59,8 +56,11 @@ jobs:
           pip install -r requirements.txt
           pip install pytest requests
 
-      - name: Pull models data with dvc
+      - name: Pull models data with dvc (required for docker build)
         run: dvc pull
+
+      - name: Run docker image with docker compose
+        run: docker compose up -d
 
       - name: Run tests with pytest
         run: pytest tests/*
