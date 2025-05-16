@@ -8,4 +8,4 @@ matplotlib==3.10.3
 seaborn==0.13.2
 plotly==6.0.1
 streamlit==1.45.1
-dvc[all]==3.59.2
+dvc==3.59.2
