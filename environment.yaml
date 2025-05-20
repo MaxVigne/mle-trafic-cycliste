@@ -117,6 +117,7 @@ dependencies:
   - mdurl=0.1.0=py312hca03da5_0
   - mistune=2.0.4=py312hca03da5_0
   - ml_dtypes=0.4.0=py312hd77ebd4_0
+  - mlflow
   - mysql=8.4.0=h3a6587f_1
   - namex=0.0.7=py312hca03da5_0
   - nbclient=0.8.0=py312hca03da5_0
@@ -162,6 +163,7 @@ dependencies:
   - pysocks=1.7.1=py312hca03da5_0
   - python=3.12.9=h99e199e_0
   - python-dateutil=2.9.0post0=py312hca03da5_2
+  - python-dotenv
   - python-fastjsonschema=2.20.0=py312hca03da5_0
   - python-flatbuffers=24.3.25=py312hca03da5_0
   - python-json-logger=3.2.1=py312hca03da5_0
