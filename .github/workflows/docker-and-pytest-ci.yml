@@ -1,4 +1,4 @@
-name: Test Docker image
+name: Train Model and test service pipeline
 
 on:
   push:
@@ -42,8 +42,23 @@ jobs:
       - name: Install the project
         run: uv sync --locked --dev
 
-      - name: Pull models data with dvc (required for docker build)
-        run: uv run dvc pull
+      - name: Retrieve 2024 raw data from opendata.paris.fr
+        run: curl 'https://opendata.paris.fr/api/datasets/1.0/comptage-velo-historique-donnees-compteurs/attachments/2024_comptage_velo_donnees_compteurs_zip/' -o velo_2024.zip && unzip velo_2024.zip && mv 2024-comptage-velo-donnees-compteurs.csv data/raw/velo_2024.csv && rm velo_2024.zip
+
+      - name: Retrieve 2023 raw data from opendata.paris.fr
+        run: curl 'https://opendata.paris.fr/api/datasets/1.0/comptage-velo-historique-donnees-compteurs/attachments/2023_comptage_velo_donnees_compteurs_zip/' -o velo_2023.zip && unzip velo_2023.zip && mv 2023-comptage-velo-donnees-compteurs.csv data/raw/velo_2023.csv && rm velo_2023.zip
+
+      - name: Generate processed data for model training
+        run: uv run src/features/process_data.py
+
+      - name: Train model and log results to MLflow
+        run: uv run src/models/train_model.py
+        env:
+          MLFLOW_TRACKING_USERNAME: MaxVigne
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+
+      # - name: Pull models data with dvc (required for docker build)
+      #   run: uv run dvc pull
 
       - name: Run docker image with docker compose
         run: docker compose up -d
