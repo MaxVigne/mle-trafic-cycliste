@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import joblib
 from sklearn.preprocessing import OneHotEncoder
 
@@ -9,6 +8,11 @@ from sklearn.preprocessing import OneHotEncoder
 # Import des datasets
 df_2023 = pd.read_csv('data/raw/velo_2023.csv', sep=';')
 df_2024 = pd.read_csv('data/raw/velo_2024.csv', sep=';')
+
+# Fix non ISO datetime format on 2024 dataset
+df_2024['Date et heure de comptage'] = df_2024['Date et heure de comptage'].str.replace(' ', 'T', n=1)
+df_2024['Date et heure de comptage'] = df_2024['Date et heure de comptage'].str.replace('.000 ', '', n=1)
+df_2024['Date et heure de comptage'] = df_2024['Date et heure de comptage'].str[:-2] + ':' + df_2024['Date et heure de comptage'].str[-2:]
 
 # Concaténation des années 2023 et 2024
 df = pd.concat([df_2023, df_2024], axis=0)
