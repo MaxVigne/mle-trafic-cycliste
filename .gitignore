@@ -161,15 +161,6 @@ cython_debug/
 
 # VSCode configuration files
 .vscode/
-
-# Data folder
-# Ignorer tout sauf les fichiers .dvc
-data/raw/*
-!data/raw/*.dvc
-data/processed/*
-!data/processed/*.dvc
+.idea/
 
 .DS_Store
-
-# Ne pas suivre les fichiers lourds, mais suivre les fichiers DVC
-!data/velo.csv.dvc
