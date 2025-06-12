@@ -32,12 +32,15 @@ jobs:
 
       - name: Generate processed data for model training
         run: uv run src/features/process_data.py
+        
+      - name: Check data folder
+        run: ls -l data/processed
 
       - name: Upload dataset as artifact
         uses: actions/upload-artifact@v4
         with:
           name: velo_dataset
-          path: data/processed/*.csv
+          path: data/processed/lieu-compteur-one-hot-encoded.csv
 
       - name: Upload one_hot_encoder as artifact
         uses: actions/upload-artifact@v4
@@ -66,6 +69,9 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
+      - name: Check data folder
+        run: ls -l data/processed
 
       - name: Set up Python
         run: uv python install
