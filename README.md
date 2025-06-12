@@ -73,7 +73,7 @@ Renvoie une prédiction pour un lieu de comptage et une heure précise
 {
   "jour": 24,
   "mois": 12,
-  "annee": 2025,
+  "annee": 2024,
   "heure": 8,
   "jour_semaine": 2,
   "jour_ferie": false,
@@ -101,7 +101,7 @@ Renvoie une prédiction pour un lieu de comptage et une heure précise
   "input_parameters": {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": false,
@@ -150,7 +150,7 @@ API_URL = "http://localhost:8000"
 payload = {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": False,

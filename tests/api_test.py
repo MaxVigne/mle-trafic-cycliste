@@ -6,7 +6,7 @@ API_URL = "http://localhost:8000"
 MODEL_INPUT_PARAMS = {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": False,
@@ -51,4 +51,3 @@ def test_metrics():
     r = requests.get(f"{API_URL}/metrics")
     assert r.status_code == 200
     assert "inference_time_seconds_count" in r.text
-

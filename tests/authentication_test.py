@@ -11,7 +11,7 @@ NONEXISTENT_USER = {"username": "nonexistent", "password": "password"}
 MODEL_INPUT_PARAMS = {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": False,
@@ -61,7 +61,7 @@ def test_predict_with_token():
     """Test accessing /predict endpoint with valid token"""
     token = get_token(VALID_USER["username"], VALID_USER["password"])
     assert token is not None
-    
+
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.post(
         f"{API_URL}/predict",
@@ -96,7 +96,7 @@ def test_users_me_with_token():
     """Test accessing /users/me endpoint with valid token"""
     token = get_token(VALID_USER["username"], VALID_USER["password"])
     assert token is not None
-    
+
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(
         f"{API_URL}/users/me",
