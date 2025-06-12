@@ -1,6 +1,4 @@
 [core]
-    remote = scw
-['remote "scw"']
-    url = s3://erk-ds-trafic-cycliste-dvc/dvc
-    endpointurl = https://s3.fr-par.scw.cloud
-    region = fr-par
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/MaxVigne/mle-trafic-cycliste.dvc
