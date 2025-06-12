@@ -2,7 +2,7 @@ FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
 WORKDIR /app
 COPY pyproject.toml .python-version uv.lock ./
-RUN uv sync --locked
+RUN uv sync --locked --no-dev
 
 RUN mkdir models
 COPY models/hgb_regressor_0.5_500.pkl models/hgb_regressor_0.5_500.pkl
