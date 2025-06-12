@@ -32,9 +32,6 @@ jobs:
 
       - name: Generate processed data for model training
         run: uv run src/features/process_data.py
-        
-      - name: Check data folder
-        run: ls -l data/processed
 
       - name: Upload dataset as artifact
         uses: actions/upload-artifact@v4
@@ -59,19 +56,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: velo_dataset
+          path: data/processed
 
       - name: Download one_hot_encoder as artifact
         uses: actions/download-artifact@v4
         with:
           name: one_hot_encoder
+          path: models
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
-
-      - name: Check data folder
-        run: ls -l data/processed
 
       - name: Set up Python
         run: uv python install
@@ -99,11 +95,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: one_hot_encoder
+          path: models
 
       - name: Download model as artifact
         uses: actions/download-artifact@v4
         with:
           name: hgb_regressor_model
+          path: models
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
