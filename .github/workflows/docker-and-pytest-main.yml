@@ -56,6 +56,9 @@ jobs:
 
       - name: Pull models data with dvc (required for docker build)
         run: uv run dvc pull
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Run docker image with docker compose
         run: docker compose up -d
