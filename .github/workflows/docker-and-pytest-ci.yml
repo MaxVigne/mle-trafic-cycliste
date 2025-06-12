@@ -48,9 +48,6 @@ jobs:
       - name: Run docker image with docker compose
         run: docker compose up -d
 
-      - name: Sleep 2s for container to startup properly
-        run: sleep 2
-
       - name: Run tests with pytest
         run: uv run pytest tests/*
 

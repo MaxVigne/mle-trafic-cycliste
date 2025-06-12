@@ -6,6 +6,9 @@ services:
 
   prometheus:
     image: prom/prometheus:v3.4.0
+    depends_on:
+      trafic_cycliste_service:
+        condition: service_healthy
     volumes:
       - ./docker/prometheus:/etc/prometheus
       - prometheus_data:/prometheus
