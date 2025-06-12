@@ -3,13 +3,18 @@ Projet Trafic Cycliste
 
 Ce projet vise à développer un outil prédictif du trafic cycliste à Paris, en exploitant les données historiques des compteurs vélo pour anticiper les flux à un lieu et moment spécifiques (jour de la semaine, heure de la journée, mois).
 
+Installation des dépendences
+----------------------------
+
+Ce projet dépend de [uv](https://docs.astral.sh/uv/getting-started/installation/) comme gestionnaire de paquets Python.
+
 Streamlit
 ---------
 
 Pour lancer le streamlit:
 
 ```shell
-streamlit run streamlit_app.py
+uv run streamlit run streamlit_app.py
 ```
 
 Diagramme d'architecture du projet
@@ -21,7 +26,7 @@ Service FastAPI et Docker Compose
 ---------------------------------
 
 > [!IMPORTANT]
-> Afin de pouvoir lancer le service FastAPI, il est nécessaire de télécharger les données et le model avec `dvc pull`
+> Afin de pouvoir lancer le service FastAPI, il est nécessaire de télécharger les données et le modèle avec `uv run dvc pull`
 > ou de suivre les étapes de préprocessing des données et d'entraînement du modèle.
 
 Pour lancer le service FastAPI avec Docker, il faut d'abord construire l'image Docker avec la commande :
@@ -68,7 +73,7 @@ Renvoie une prédiction pour un lieu de comptage et une heure précise
 {
   "jour": 24,
   "mois": 12,
-  "annee": 2025,
+  "annee": 2024,
   "heure": 8,
   "jour_semaine": 2,
   "jour_ferie": false,
@@ -96,7 +101,7 @@ Renvoie une prédiction pour un lieu de comptage et une heure précise
   "input_parameters": {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": false,
@@ -145,7 +150,7 @@ API_URL = "http://localhost:8000"
 payload = {
     "jour": 24,
     "mois": 12,
-    "annee": 2025,
+    "annee": 2024,
     "heure": 8,
     "jour_semaine": 2,
     "jour_ferie": False,
@@ -188,8 +193,7 @@ Organisation du projet
     │                         the creator's name, and a short `-` delimited description, e.g.
     │                         `1.0-alban-data-exploration`.
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
+    ├── pyproject.toml   <- The Python project file with dependencies
     │
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
@@ -216,13 +220,13 @@ Pour effectuer le processing des données (pour la régression), il faut d'abord
 puis lancer le script suivant dans le virtualenv du projet :
 
 ```sh
-python ./src/features/process_data.py
+uv run ./src/features/process_data.py
 ```
 
 L'entrainement du modèle de régression pour le service FastAPI peut être effectué avec :
 
 ```sh
-python ./src/models/train_model.py
+uv run ./src/models/train_model.py
 ```
 
 Notebooks

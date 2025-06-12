@@ -1,4 +1,4 @@
-name: Test Docker image
+name: Train Model and test service pipeline
 
 on:
   push:
@@ -10,28 +10,98 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-pytest:
+  process-data:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+      - name: Retrieve 2024 raw data from opendata.paris.fr
+        run: curl 'https://opendata.paris.fr/api/datasets/1.0/comptage-velo-historique-donnees-compteurs/attachments/2024_comptage_velo_donnees_compteurs_zip/' -o velo_2024.zip && unzip velo_2024.zip && mv 2024-comptage-velo-donnees-compteurs.csv data/raw/velo_2024.csv && rm velo_2024.zip
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+      - name: Retrieve 2023 raw data from opendata.paris.fr
+        run: curl 'https://opendata.paris.fr/api/datasets/1.0/comptage-velo-historique-donnees-compteurs/attachments/2023_comptage_velo_donnees_compteurs_zip/' -o velo_2023.zip && unzip velo_2023.zip && mv 2023_comptage-velo-donnees-compteurs.csv data/raw/velo_2023.csv && rm velo_2023.zip
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Generate processed data for model training
+        run: uv run src/features/process_data.py
+
+      - name: Upload dataset as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: velo_dataset
+          path: data/processed/lieu-compteur-one-hot-encoded.csv
+
+      - name: Upload one_hot_encoder as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: one_hot_encoder
+          path: models/one_hot_encoder.pkl
+
+  train-model:
+    runs-on: ubuntu-latest
+    needs: process-data
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download dataset as artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: velo_dataset
+          path: data/processed
+
+      - name: Download one_hot_encoder as artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: one_hot_encoder
+          path: models
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Train model and log results to MLflow
+        run: uv run src/models/train_model.py
+        env:
+          MLFLOW_TRACKING_USERNAME: MaxVigne
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+
+      - name: Upload model as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hgb_regressor_model
+          path: models/hgb_regressor_0.5_500.pkl
+
+  build-and-test-service:
+    runs-on: ubuntu-latest
+    needs: [process-data, train-model]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download one_hot_encoder as artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: one_hot_encoder
+          path: models
+
+      - name: Download model as artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: hgb_regressor_model
+          path: models
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -39,17 +109,11 @@ jobs:
       - name: Set up Python
         run: uv python install
 
-      - name: Install the project
-        run: uv sync --locked --dev
-
-      - name: Pull models data with dvc (required for docker build)
-        run: uv run dvc pull
+      # - name: Pull models data with dvc (required for docker build)
+      #   run: uv run dvc pull
 
       - name: Run docker image with docker compose
         run: docker compose up -d
-
-      - name: Sleep 2s for container to startup properly
-        run: sleep 2
 
       - name: Run tests with pytest
         run: uv run pytest tests/*
