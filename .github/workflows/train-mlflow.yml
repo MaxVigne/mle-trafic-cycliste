@@ -14,73 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
+        run: uv python install
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Set environment variables for DagsHub
-        run: |
-          echo "DAGSHUB_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
-          echo "DAGSHUB_TOKEN=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Install DVC
-        run: pip install dvc[http]
-      
-      - name: Configure DVC remote
-        run: |
-          dvc remote add -f origin https://dagshub.com/KevinL-tech/jan25_bds_trafic_cycliste.dvc
-          dvc remote modify origin --local auth basic
-          dvc remote modify origin --local user ${{ secrets.DAGSHUB_USERNAME }}
-          dvc remote modify origin --local password ${{ secrets.DAGSHUB_TOKEN }}
+      - name: Install the project
+        run: uv sync --locked --dev
 
       - name: Pull data with DVC
-        run: dvc pull -r origin --verbose
+        run: uv run dvc pull
 
       - name: Train model and log to MLflow
-        run: |
-          python src/models/train_comptage_velo_MLflow.py
-
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose version
-
-      - name: Build and run API
-        run: docker-compose up -d
-
-      - name: Wait for API to be ready
-        run: |
-          echo "Attente de l'API..."
-          for i in {1..10}; do
-            if curl -s http://localhost:8000/ | grep -q "Welcome"; then
-              echo "API disponible"
-              break
-            fi
-            echo "Nouvel essai dans 5s..."
-            sleep 5
-          done
-
-      - name: Run API tests
-        run: |
-          pip install pytest requests
-          pytest tests/api_test.py
-
-      - name: Build Docker image
-        run: docker build -t kevinltech/jan25_bds_trafic_cycliste:latest .
-
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image to Docker Hub
-        run: docker push kevinltech/jan25_bds_trafic_cycliste:latest
-
-      - name: Stop Docker services
-        run: docker-compose down
-
+        run: uv run src/models/train_comptage_velo_MLflow.py
