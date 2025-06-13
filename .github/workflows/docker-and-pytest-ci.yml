@@ -28,7 +28,9 @@ jobs:
           enable-cache: true
 
       - name: Set up Python
-        run: uv python install
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
 
       - name: Generate processed data for model training
         run: uv run src/features/process_data.py
@@ -70,7 +72,9 @@ jobs:
           enable-cache: true
 
       - name: Set up Python
-        run: uv python install
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
 
       - name: Train model and log results to MLflow
         run: uv run src/models/train_model.py
@@ -107,7 +111,9 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Set up Python
-        run: uv python install
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
 
       # - name: Pull models data with dvc (required for docker build)
       #   run: uv run dvc pull
